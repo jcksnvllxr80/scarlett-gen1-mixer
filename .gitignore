@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+
+# Build output (Xcode, scripts/package.sh, SwiftPM)
+build/
+DerivedData/
+.build/
+.swiftpm/
+*.xcresult
+*.dmg
+
+# Xcode per-user state
+xcuserdata/
+*.xcuserstate
+
+# Editors
+.vscode/
+.idea/
+
+# Logs and personal files
+*.log
+*.scarlettmix
+
+# Local agent and editor tooling (not published)
+CLAUDE.md
+.mcp.json
+.claude/
+
+# Secrets (e.g. a Sparkle signing key exported to a file)
+.env
+*.pem
+*.p12
+*key*.txt

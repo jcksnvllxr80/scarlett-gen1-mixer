@@ -1,0 +1,32 @@
+Scarlett 18i20 mixer state, read with `scarlett dump` on 2026-11-22, before the
+device was power-cycled. Kept as a reference for restoring settings if needed.
+
+Clock: internal, 48000 Hz, locked
+
+Outputs                volume L/R      mute L/R     source L / R
+  Master (all)          +0.0           on
+  Monitor              -inf   -inf     - -          Mix A / Mix B
+  Line 3/4             -inf   -inf     - -          Mix A / Mix B
+  Line 5/6             -inf   -inf     - -          Mix A / Mix B
+  Line 7/8             +0.0   +0.0     - -          Mix A / Mix B
+  Line 9/10            +0.0   +0.0     - -          Mix A / Mix B
+  S/PDIF               +0.0   +0.0     - -          Off / Off
+  ADAT 1/2 … 7/8       +0.0   +0.0     - -          Off / Off
+
+Recorded to computer: channels 1-8 = Analog 1-8, 9-10 = S/PDIF 1-2, 11-18 = ADAT 1-8
+
+Mixer (gain in dB per mix; mixes C-H all -inf)
+  input  source        A      B
+   1     Analog 1     +4.0   -inf
+   2     Analog 2     -inf   +4.0
+   3-8   Analog 3-8   -6.0   -6.0
+   9     ADAT 1       +0.0   -inf
+  10     ADAT 2       -inf   +0.0
+  11     ADAT 3       +0.0   -inf
+  12     ADAT 5      -88.0   +0.0
+  13     Off          -inf   -inf
+  14     Off          -inf   -inf
+  15     DAW 3        -5.0   -5.0
+  16     DAW 4        -6.0   -6.0
+  17     DAW 1        +1.0   -inf
+  18     DAW 2        -inf   +1.0

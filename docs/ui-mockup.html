@@ -1,0 +1,40 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>C — Monitor-first</title>
+<style>
+:root{--bg:#0b0d0e;--p:#121517;--p2:#171b1d;--line:#23292c;--txt:#d7e0e2;--dim:#6b7a7f;--acc:#2dd4bf;--red:#f43f5e;--amb:#fbbf24}
+*{box-sizing:border-box}body{margin:0;width:1600px;height:1000px;overflow:hidden;background:var(--bg);color:var(--txt);font:13px "Inter","Helvetica Neue",system-ui,sans-serif}
+.mono{font-family:"JetBrains Mono","SF Mono",ui-monospace,monospace}
+.band{border-bottom:1px solid var(--line);padding:18px 24px}
+.top{display:grid;grid-template-columns:260px 1fr 330px;gap:28px;align-items:center;background:linear-gradient(var(--p2),var(--p))}
+.kn{width:210px;height:210px;border-radius:50%;background:conic-gradient(var(--acc) 0 38%,#1d2326 38% 100%);display:grid;place-items:center;position:relative}
+.kn>div{width:176px;height:176px;border-radius:50%;background:radial-gradient(circle at 40% 30%,#232a2d,#0e1112);display:grid;place-items:center;text-align:center}
+.kv{font-size:40px;font-weight:700;color:var(--acc)}.hw{font-size:11px;letter-spacing:.2em;color:var(--dim);margin-top:2px}
+.btns{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.b{height:72px;border-radius:10px;background:var(--p2);border:1px solid var(--line);display:grid;place-items:center;font-weight:800;letter-spacing:.08em;color:var(--dim)}
+.b.amb{color:var(--amb);border-color:#3a3115}.leds{display:flex;gap:8px;margin-top:14px;align-items:center}.led{width:34px;text-align:center;font-size:11px;color:var(--dim)}.led i{display:block;width:12px;height:12px;border-radius:50%;margin:0 auto 4px;background:#1f2629}.led.on i{background:var(--acc);box-shadow:0 0 8px var(--acc)}
+.chips{display:flex;flex-direction:column;gap:8px}.chip{padding:9px 14px;border-radius:8px;background:var(--p2);border:1px solid var(--line);display:flex;justify-content:space-between}.chip b{color:var(--acc)}
+.mid{display:flex;flex-direction:column;gap:12px}.sel{display:flex;gap:8px}.sel span{padding:6px 14px;border-radius:999px;border:1px solid var(--line);color:var(--dim)}.sel .on{border-color:var(--acc);color:var(--acc)}
+.faders{display:flex;gap:6px;height:300px}.f{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--p);border:1px solid var(--line);border-radius:8px;padding:8px 2px}.f.off{opacity:.3}
+.f .n{font-size:10px;font-weight:700;color:var(--dim);text-align:center}.fx{flex:1;display:flex;gap:4px}.seg{width:7px;display:flex;flex-direction:column-reverse;gap:2px}.seg i{flex:1;background:#1b2124;border-radius:1px}.seg i.l{background:var(--acc)}.seg i.h{background:var(--amb)}
+.rail{width:4px;background:#1b2124;position:relative}.rail b{position:absolute;left:-8px;width:20px;height:10px;background:var(--txt);border-radius:2px}
+.f .d{font-size:10px;color:var(--txt)}.f .ms{display:flex;gap:3px}.f .ms span{font-size:9px;padding:2px 5px;border:1px solid var(--line);border-radius:3px;color:var(--dim)}
+.pb{display:grid;grid-template-columns:120px repeat(24,1fr);gap:3px;font-size:10px}.pb .h{color:var(--dim);text-align:center}.pb .rl{color:var(--txt)}.pb .x{height:16px;border-radius:3px;background:#12181a;display:grid;place-items:center}.pb .x.a i{width:8px;height:8px;border-radius:50%;background:var(--acc);box-shadow:0 0 6px var(--acc)}
+h4{margin:0 0 8px;font-size:11px;letter-spacing:.18em;color:var(--dim)}
+</style></head><body>
+<div class="band top"><div class="kn"><div><div><div class="kv mono">−50</div><div class="hw">dB · HW KNOB</div></div></div></div>
+<div><div class="btns"><div class="b">DIM</div><div class="b">MUTE</div><div class="b">L</div><div class="b">R</div><div class="b">MONO</div><div class="b amb">−20 PAD</div></div>
+<div class="leds" id="leds"><span style="color:var(--dim);font-size:11px;margin-right:6px">OUTPUTS</span></div></div>
+<div class="chips"><div class="chip"><span>Device</span><b>Scarlett 18i20</b></div><div class="chip"><span>Clock</span><b class="mono">48 kHz · Internal</b></div><div class="chip"><span>Sync</span><b>LOCKED</b></div></div></div>
+<div class="band mid"><div class="sel"><span class="on">Mix 1/2</span><span>Mix 3/4</span><span>Mix 5/6</span><span>Mix 7/8</span></div><div class="faders" id="f"></div></div>
+<div class="band"><h4>ROUTING · OUTPUTS ← SOURCES</h4><div class="pb mono" id="pb"></div></div>
+<script>
+const ch=[["Analog 1",-6,.35],["Analog 2",-6,.3],["Analog 3",-6,.12],["Analog 4",-6,.1],["Analog 5",-6,.08],["Analog 6",-6,.06],["Analog 7",-6,.05],["Analog 8",-6,.04],["ADAT 1",0,0],["ADAT 2",0,0],["ADAT 3",0,0],["ADAT 5",-88,0],["Off"],["Off"],["DAW 3",-5,.5],["DAW 4",-6,.48],["DAW 1",1,.62],["DAW 2",1,.6]];
+const pos=d=>d==null?0:Math.max(0,Math.min(1,(d+60)/66));
+document.getElementById('f').innerHTML=ch.map(c=>{const lit=Math.round((c[2]||0)*20);const seg=[...Array(20)].map((_,k)=>`<i class="${k<lit?(k>15?'h':'l'):''}"></i>`).join('');
+return `<div class="f ${c[0]=='Off'?'off':''}"><div class="n">${c[0]}</div><div class="fx"><div class="rail"><b style="bottom:calc(${pos(c[1])*100}% - 5px)"></b></div><div class="seg">${seg}</div></div><div class="d mono">${c[1]==null?'−∞':(c[1]>0?'+':'')+c[1].toFixed(1)}</div><div class="ms"><span>M</span><span>S</span></div></div>`}).join('');
+document.getElementById('leds').innerHTML+=[...Array(10)].map((_,i)=>`<div class="led ${i<6?'on':''}"><i></i>${i+1}</div>`).join('');
+const srcs=["MxA","MxB","MxC","MxD","MxE","MxF","MxG","MxH","An1","An2","An3","An4","An5","An6","An7","An8","DW1","DW2","DW3","DW4","DW5","DW6","DW7","DW8"];
+const outs=["Monitor L","Monitor R","Line 3","Line 4","Line 5","Line 6","Line 7","Line 8","Line 9","Line 10","S/PDIF L","S/PDIF R","ADAT 1","ADAT 2"];
+let h='<div></div>'+srcs.map(s=>`<div class="h">${s}</div>`).join('');
+outs.forEach((o,r)=>{h+=`<div class="rl">${o}</div>`+srcs.map((s,c)=>`<div class="x ${r<10&&c==(r%2)?'a':''}">${r<10&&c==(r%2)?'<i></i>':''}</div>`).join('')});
+document.getElementById('pb').innerHTML=h;
+</script></body></html>
