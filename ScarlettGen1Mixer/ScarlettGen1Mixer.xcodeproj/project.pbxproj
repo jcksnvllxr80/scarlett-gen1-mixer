@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		119106C930B2CD900052EA2A /* ScarlettKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 119106C030B2CD8F0052EA2A /* ScarlettKit.framework */; };
+		1191AA0130B2CD7C0052EA2A /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 1191AA0330B2CD7C0052EA2A /* Sparkle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		119106AA30B2CD7C0052EA2A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				1191AA0130B2CD7C0052EA2A /* Sparkle in Frameworks */,
 			);
 		};
 		119106BD30B2CD8F0052EA2A /* Frameworks */ = {
@@ -135,6 +137,9 @@
 				119106AF30B2CD7C0052EA2A /* ScarlettGen1Mixer */,
 			);
 			name = ScarlettGen1Mixer;
+			packageProductDependencies = (
+				1191AA0330B2CD7C0052EA2A /* Sparkle */,
+			);
 			productName = ScarlettGen1Mixer;
 			productReference = 119106AD30B2CD7C0052EA2A /* ScarlettGen1Mixer.app */;
 			productType = "com.apple.product-type.application";
@@ -230,6 +235,9 @@
 			);
 			mainGroup = 119106A430B2CD7C0052EA2A;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1191AA0230B2CD7C0052EA2A /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 119106AE30B2CD7C0052EA2A /* Products */;
 			projectDirPath = "";
@@ -424,6 +432,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -459,6 +468,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -687,6 +697,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1191AA0230B2CD7C0052EA2A /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1191AA0330B2CD7C0052EA2A /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1191AA0230B2CD7C0052EA2A /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 119106A530B2CD7C0052EA2A /* Project object */;
 	validationLevel = 1;

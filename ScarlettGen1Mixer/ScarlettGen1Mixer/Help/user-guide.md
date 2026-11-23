@@ -146,13 +146,14 @@ Everything in the window is also in the menu bar. On/off items show a ✓.
 
 | Menu | Items |
 |---|---|
+| **Scarlett Gen 1 Mixer** (app menu) | About · Check for Updates… (downloads, installs and relaunches; each update is signed and verified) |
 | **File** | Open Setup… ⌘O · Open Recent ▸ · Save Setup ⌘S · Save Setup As… ⇧⌘S · Show Setups Folder · Save to Interface… · Restore Factory Defaults… |
 | **View** | Show Monitor ⌥⌘1 · Show Mixer ⌥⌘2 · Show Routing ⌥⌘3 · Appearance ▸ · Reset Layout |
 | **Monitor** | Dim ⌘D · Mute ⇧⌘M · Mute Left · Mute Right · Mono · −20 dB Pad |
 | **Mixer** | Mix 1/2 ⌘1 · Mix 3/4 ⌘2 · Mix 5/6 ⌘3 · Mix 7/8 ⌘4 · Current Mix Is Stereo |
 | **Routing** | Reset Input and DAW Names |
 | **Device** | Sample Rate ▸ · Clock Source ▸ · Refresh from Device ⌘R |
-| **Help** | Scarlett Gen 1 Mixer User Guide ⌘? · About |
+| **Help** | Scarlett Gen 1 Mixer User Guide ⌘? · View Source on GitHub · About |
 
 ## Layout
 

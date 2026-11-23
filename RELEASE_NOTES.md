@@ -3,6 +3,12 @@
 Each version gets a section. The release pipeline uses the section matching the version in
 `ScarlettGen1Mixer/Version.xcconfig` as the GitHub release description.
 
+## 0.1.0
+
+- **Updates:** Check for Updates… (app menu) and a daily automatic check. Updates download, install in place and relaunch; each one is signed and verified.
+- **Help ▸ View Source on GitHub.**
+- **Requires macOS 26 or later.**
+
 ## 0.0.1
 
 First preview release, for the 1st-gen Scarlett 18i20 on macOS 26 or later. Other 1st-gen models are untested.

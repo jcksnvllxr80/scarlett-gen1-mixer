@@ -49,6 +49,9 @@ echo "==> Ad-hoc signing"
 codesign --force --deep --sign - "$APP"
 codesign --verify --strict "$APP"
 
+# Zip of the signed app: what Sparkle downloads to update in place (signed by scripts/make-appcast.sh)
+ditto -c -k --sequesterRsrc --keepParent "$APP" "$BUILD/$APP_NAME.zip"
+
 echo "==> Creating styled disk image"
 # Detach a leftover volume with the same name from an earlier run
 [ -d "/Volumes/$VOLUME" ] && hdiutil detach "/Volumes/$VOLUME" -force >/dev/null || true

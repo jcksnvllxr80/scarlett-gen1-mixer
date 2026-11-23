@@ -6,7 +6,7 @@
   - Bundle `docs/user-guide.md` into the app (copy it into the app's resources at build time).
   - Render it: convert Markdown to HTML with a small built-in converter and show it in a `WKWebView` with app-theme CSS. SwiftUI `Text` can't render tables or block elements.
   - Links inside the guide (e.g. `#setups-save-and-recall`) should scroll within the window.
-- [ ] **Separate Help ▸ View Source on GitHub** item that opens the repository page. *After the first GitHub release.*
+- [x] **Separate Help ▸ View Source on GitHub** item that opens the repository page. *Done in 0.1.0.*
 
 ## First GitHub release
 
@@ -18,7 +18,7 @@
 
 ## Updates and installation
 
-- [ ] **Check for updates and install in place (Sparkle).** *After the first GitHub release* (there must be a release to update from). The plan:
+- [x] **Check for updates and install in place (Sparkle).** *Done in 0.1.0:* Sparkle 2 package; `SUFeedURL` and `SUPublicEDKey` in `ScarlettGen1Mixer/Info.plist`; private key in the Keychain (account `scarlett-gen1-mixer`) and the `SPARKLE_PRIVATE_KEY` GitHub secret; `scripts/make-appcast.sh` signs the zip and writes `appcast.xml`, attached to each release. **Still to test with the user:** install 0.1.0, release 0.1.1, check it updates in place, relaunches and reconnects.
   1. **Add Sparkle 2** (free, open source, the standard Mac updater) as a Swift package to the app target, embedded and signed. Adding the package is a one-time step in Xcode (File ▸ Add Package Dependencies…), since the Xcode tools can't add packages.
   2. **Signing key:** run Sparkle's `generate_keys` once. The public key goes in the app's Info.plist (`SUPublicEDKey`). The private key is stored only as a GitHub secret (`SPARKLE_PRIVATE_KEY`), never in the repo. The app refuses any update not signed with it.
   3. **Update feed:** `appcast.xml` (version, release notes, download link and signature) is attached to every release. The app reads `https://github.com/jcksnvllxr80/scarlett-gen1-mixer/releases/latest/download/appcast.xml` (`SUFeedURL`), so no separate website is needed.

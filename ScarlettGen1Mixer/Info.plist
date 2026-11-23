@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Merged into the app's generated Info.plist. Sparkle updates: the feed is the latest GitHub
+     release's appcast.xml; updates must be signed with the matching private key (GitHub secret). -->
+<plist version="1.0">
+<dict>
+	<key>SUFeedURL</key>
+	<string>https://github.com/jcksnvllxr80/scarlett-gen1-mixer/releases/latest/download/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>lbsKsqOMbTW5A7bOc4HqSRxWaNm0ew/Nw0T2L/wanrs=</string>
+	<key>SUVerifyUpdateBeforeExtraction</key>
+	<true/>
+</dict>
+</plist>

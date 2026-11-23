@@ -12,6 +12,7 @@ import UniformTypeIdentifiers
 enum SetupActions {
     static let fileType = UTType(filenameExtension: "scarlettmix") ?? .json
     static let guideURL = URL(string: "https://github.com/jcksnvllxr80/scarlett-gen1-mixer/blob/main/docs/user-guide.md")!
+    static let sourceURL = URL(string: "https://github.com/jcksnvllxr80/scarlett-gen1-mixer")!
 
     /// Where setups live: ~/Documents/Scarlett Gen 1 Mixer (created when needed). Open and
     /// Save As always start here. Not inside the app: updates replace the whole app.
