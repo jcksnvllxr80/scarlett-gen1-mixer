@@ -1,12 +1,12 @@
 name: Build
 
-# Every push to main/master: test, build and package (the .dmg is kept as an artifact).
-# A GitHub Release is created only when the version in Version.xcconfig has no release yet.
+# Every push, on any branch: test, build and package (the .dmg is kept as an artifact).
+# Releases come only from main: a GitHub Release is created when the version in
+# Version.xcconfig has no release yet.
 on:
   push:
-    branches: [main, master]
   pull_request:
-    branches: [main, master]
+    branches: [main]
 
 permissions:
   contents: write   # to create tags and releases
@@ -48,7 +48,7 @@ jobs:
           path: build/ScarlettGen1Mixer.dmg
 
       - name: Release if the version is new
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.version.outputs.version }}
