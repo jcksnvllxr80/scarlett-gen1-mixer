@@ -1,18 +1,59 @@
 name: Build
 
-# Every push, on any branch: test, build and package (the .dmg is kept as an artifact).
-# Releases come only from main: a GitHub Release is created when the version in
-# Version.xcconfig has no release yet.
+# Runs only when source changes AND the version in ScarlettGen1Mixer/Version.xcconfig was bumped:
+# a quick gate checks the version; without a bump nothing is built. With a bump it tests, builds
+# and packages; on main it also releases that version.
 on:
   push:
+    paths:
+      - "ScarlettGen1Mixer/**"
+      - "scripts/**"
+      - "packaging/**"
+      - ".github/workflows/**"
   pull_request:
     branches: [main]
+    paths:
+      - "ScarlettGen1Mixer/**"
+      - "scripts/**"
+      - "packaging/**"
+      - ".github/workflows/**"
 
 permissions:
   contents: write   # to create tags and releases
 
 jobs:
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      bumped: ${{ steps.check.outputs.bumped }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Was the version bumped?
+        id: check
+        env:
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          BEFORE: ${{ github.event.before }}
+        run: |
+          # Compare with the PR's base, the previous commit on this branch, or (new branch) main
+          BASE="${PR_BASE:-$BEFORE}"
+          if [ -z "$BASE" ] || ! git cat-file -e "$BASE^{commit}" 2>/dev/null; then
+            BASE="$(git merge-base origin/main HEAD)"
+          fi
+          version() { git show "$1:ScarlettGen1Mixer/Version.xcconfig" 2>/dev/null | awk -F= '/^[[:space:]]*MARKETING_VERSION/ {gsub(/[[:space:]]/, "", $2); print $2}'; }
+          OLD="$(version "$BASE")"; NEW="$(version HEAD)"
+          if [ "$OLD" != "$NEW" ]; then
+            echo "Version bumped: $OLD -> $NEW"
+            echo "bumped=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice title=Version not bumped::Still $NEW, so nothing is built. Bump ScarlettGen1Mixer/Version.xcconfig to build and release."
+            echo "bumped=false" >> "$GITHUB_OUTPUT"
+          fi
+
   build:
+    needs: gate
+    if: needs.gate.outputs.bumped == 'true'
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,7 +97,7 @@ jobs:
         run: |
           TAG="v$VERSION"
           if gh release view "$TAG" >/dev/null 2>&1; then
-            echo "Release $TAG already exists; nothing to release."
+            echo "::notice title=No release::$TAG already exists. Bump ScarlettGen1Mixer/Version.xcconfig to release."
             exit 0
           fi
           cp build/ScarlettGen1Mixer.dmg "build/ScarlettGen1Mixer-$VERSION.dmg"
