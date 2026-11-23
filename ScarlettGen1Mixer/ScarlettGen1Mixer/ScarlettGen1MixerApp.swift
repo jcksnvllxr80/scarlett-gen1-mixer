@@ -5,11 +5,15 @@
 
 import SwiftUI
 import ScarlettKit
+import Sparkle
 
 /// Quits cleanly: lets the USB loop finish its current request, sends any queued changes,
 /// and closes the device before the app exits. Also turns SIGTERM (e.g. `kill`) into a normal Quit.
 final class AppDelegate: NSObject, NSApplicationDelegate {
     let model = MixerModel()
+    /// Sparkle: checks the GitHub release feed (Info.plist SUFeedURL), verifies the signature,
+    /// installs in place and relaunches. Asks the user before turning on automatic checks.
+    let updater = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
     private var sigterm: DispatchSourceSignal?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -48,7 +52,7 @@ struct ScarlettGen1MixerApp: App {
         WindowGroup {
             ContentView(model: model, layout: layout)
         }
-        .commands { AppCommands(model: model, layout: layout) }
+        .commands { AppCommands(model: model, layout: layout, updater: appDelegate.updater.updater) }
         Window("User Guide", id: "guide") { GuideView() }
             .defaultSize(width: 900, height: 900)
     }
@@ -58,6 +62,7 @@ struct ScarlettGen1MixerApp: App {
 struct AppCommands: Commands {
     let model: MixerModel
     let layout: LayoutState
+    let updater: SPUUpdater
     @Environment(\.openWindow) private var openWindow
     @AppStorage(Appearance.key) private var appearance = Appearance.dark.rawValue
 
@@ -69,6 +74,7 @@ struct AppCommands: Commands {
         // App menu: About with version, build and commit
         CommandGroup(replacing: .appInfo) {
             Button("About Scarlett Gen 1 Mixer") { AppInfo.showAbout() }
+            Button("Check for Updates…") { updater.checkForUpdates() }
         }
 
         // File
@@ -156,6 +162,7 @@ struct AppCommands: Commands {
         // Help
         CommandGroup(replacing: .help) {
             Button("Scarlett Gen 1 Mixer User Guide") { openWindow(id: "guide") }.keyboardShortcut("?")
+            Button("View Source on GitHub") { NSWorkspace.shared.open(SetupActions.sourceURL) }
             Divider()
             Button("About Scarlett Gen 1 Mixer") { AppInfo.showAbout() }
         }

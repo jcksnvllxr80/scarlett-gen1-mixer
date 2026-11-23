@@ -52,6 +52,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.version.outputs.version }}
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
         run: |
           TAG="v$VERSION"
           if gh release view "$TAG" >/dev/null 2>&1; then
@@ -59,7 +60,19 @@ jobs:
             exit 0
           fi
           cp build/ScarlettGen1Mixer.dmg "build/ScarlettGen1Mixer-$VERSION.dmg"
+          ASSETS=("build/ScarlettGen1Mixer-$VERSION.dmg")
+          # Sparkle update: the signed zip and the update feed (needs the SPARKLE_PRIVATE_KEY secret)
+          if [ -n "$SPARKLE_PRIVATE_KEY" ]; then
+            KEY="$RUNNER_TEMP/sparkle.key"
+            (umask 077; printf '%s' "$SPARKLE_PRIVATE_KEY" > "$KEY")
+            scripts/make-appcast.sh "$KEY"
+            rm -f "$KEY"
+            cp build/ScarlettGen1Mixer.zip "build/ScarlettGen1Mixer-$VERSION.zip"
+            ASSETS+=("build/ScarlettGen1Mixer-$VERSION.zip" build/appcast.xml)
+          else
+            echo "No SPARKLE_PRIVATE_KEY secret: releasing without an update feed."
+          fi
           # Release description: this version's section of RELEASE_NOTES.md
           awk -v v="## $VERSION" '$0 == v {on=1; next} /^## / {on=0} on' RELEASE_NOTES.md > build/notes.md
-          gh release create "$TAG" "build/ScarlettGen1Mixer-$VERSION.dmg" \
+          gh release create "$TAG" "${ASSETS[@]}" \
             --target "$GITHUB_SHA" --title "Scarlett Gen 1 Mixer $VERSION" --notes-file build/notes.md
