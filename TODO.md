@@ -18,7 +18,7 @@
 
 ## Updates and installation
 
-- [x] **Check for updates and install in place (Sparkle).** *Done in 0.1.0:* Sparkle 2 package; `SUFeedURL` and `SUPublicEDKey` in `ScarlettGen1Mixer/Info.plist`; private key in the Keychain (account `scarlett-gen1-mixer`) and the `SPARKLE_PRIVATE_KEY` GitHub secret; `scripts/make-appcast.sh` signs the zip and writes `appcast.xml`, attached to each release. **Still to test with the user:** install 0.1.0, release 0.1.1, check it updates in place, relaunches and reconnects.
+- [x] **Check for updates and install in place (Sparkle).** *Done in 0.1.0:* Sparkle 2 package; `SUFeedURL` and `SUPublicEDKey` in `ScarlettGen1Mixer/Info.plist`; private key in the Keychain (account `scarlett-gen1-mixer`) and the `SPARKLE_PRIVATE_KEY` GitHub secret; `scripts/make-appcast.sh` signs the zip and writes `appcast.xml`, attached to each release. **Tested 2026-11-23:** the installed 0.1.0 release updated itself to 0.1.1 (build 11) via Check for Updates; signature verified.
   1. **Add Sparkle 2** (free, open source, the standard Mac updater) as a Swift package to the app target, embedded and signed. Adding the package is a one-time step in Xcode (File ▸ Add Package Dependencies…), since the Xcode tools can't add packages.
   2. **Signing key:** run Sparkle's `generate_keys` once. The public key goes in the app's Info.plist (`SUPublicEDKey`). The private key is stored only as a GitHub secret (`SPARKLE_PRIVATE_KEY`), never in the repo. The app refuses any update not signed with it.
   3. **Update feed:** `appcast.xml` (version, release notes, download link and signature) is attached to every release. The app reads `https://github.com/jcksnvllxr80/scarlett-gen1-mixer/releases/latest/download/appcast.xml` (`SUFeedURL`), so no separate website is needed.
@@ -30,6 +30,7 @@
 - [x] **Versioning.** The version lives on **one line** in `ScarlettGen1Mixer/Version.xcconfig` (starting at 0.0.1), the app target's base configuration. `scripts/version.sh` reads it for packaging and CI. The build number comes from the CI run (or the commit count locally). The standard About window shows it.
 - [x] **Release notes.** `RELEASE_NOTES.md` has one section per version, used as the GitHub release description. A unit test requires a section for the current version.
 - [x] **Installation.** `scripts/package.sh` builds a styled `.dmg`: opening it shows the app, an arrow and the Applications folder on the matrix background (`packaging/dmg/`), so users drag the app across to install. The first-launch tip (System Settings ▸ Privacy & Security ▸ Open Anyway) is on the background. The README has an **Install** section.
+- [ ] *(Optional)* **Help ▸ Check for Updates…** as well as the app menu.
 - [ ] **Homebrew cask** (optional, *after the first GitHub release*): `brew install --cask …` pointing at the GitHub release `.dmg`.
 
 ## Hardware follow-ups
