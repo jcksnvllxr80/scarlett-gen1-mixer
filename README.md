@@ -25,8 +25,9 @@ The Linux kernel driver [`sound/usb/mixer_scarlett.c`](https://github.com/torval
 ## Versions and releases
 
 - The version is set in one place: **`ScarlettGen1Mixer/Version.xcconfig`** (`MARKETING_VERSION`).
-- Every push to `main` builds and tests the app. When the version has no GitHub release yet, the pipeline publishes one with the `.dmg` attached.
-- To release: bump the version, add a section for it to **[`RELEASE_NOTES.md`](RELEASE_NOTES.md)**, then push.
+- The pipeline builds and tests only when source changes **and** the version is bumped. Without a bump, nothing is built (the run says so).
+- Releases come only from `main`: merging a bumped version publishes it, with the `.dmg` and the in-app update attached.
+- To release: on a branch, change the code, bump the version, add a section to **[`RELEASE_NOTES.md`](RELEASE_NOTES.md)**, open a pull request, and merge it.
 
 ## License
 
