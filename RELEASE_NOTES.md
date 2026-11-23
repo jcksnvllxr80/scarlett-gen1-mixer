@@ -3,6 +3,11 @@
 Each version gets a section. The release pipeline uses the section matching the version in
 `ScarlettGen1Mixer/Version.xcconfig` as the GitHub release description.
 
+## 0.1.1
+
+- Tests the in-app update from 0.1.0.
+- Every branch now builds; releases still come only from main.
+
 ## 0.1.0
 
 - **Updates:** Check for Updates… (app menu) and a daily automatic check. Updates download, install in place and relaunch; each one is signed and verified.
